@@ -1,14 +1,15 @@
 const { Router } = require('express');
+const { getClients, createClient, getClient, updateClient, deleteClieny } = require('../controllers/clients.controller');
 
 const router = Router();
 
 router.route('/')
-    .get((req, res) => res.send('Clients works!'))
-/*    .post()
+    .get(getClients)
+    .post(createClient);
 
 router.route('/:id')
-    .get((req, res) => res.send('Client works!'))
-    .put()
-    .delete()*/
+    .get(getClient)
+    .put(updateClient)
+    .delete(deleteClieny);
 
 module.exports = router;
