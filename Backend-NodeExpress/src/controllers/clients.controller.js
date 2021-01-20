@@ -1,13 +1,42 @@
+const Client = require('../models/Clients');
 const clientsCtrl = {};
 
-clientsCtrl.getClients = (req, res) => res.json({message: 'GET Request'});
+clientsCtrl.getClients = async (req, res) => {
+    const clients = await Client.find();
+    res.json(clients);
+}
 
-clientsCtrl.createClient = (req, res) => res.json({message: 'POST Request'});
+clientsCtrl.createClient = async (req, res) => {
+    const { name, dni, email, birthday_date } = req.body;
+    const newClient = new Client({
+        name,
+        dni,
+        email,
+        birthday_date
+    })
+    await newClient.save();
+    res.json({message: 'Created client.'});
+}
 
-clientsCtrl.getClient = (req, res) => res.json({message: 'GET Request client'});
+clientsCtrl.getClient = async (req, res) => {;
+    const client = await Client.findById(req.params.id);
+    res.json(client);
+}
 
-clientsCtrl.updateClient = (req, res) => res.json({message: 'PUT Request client'});
+clientsCtrl.updateClient = async (req, res) => {
+    const { name, dni, email, birthday_date } = req.body;
+    await Client.findOneAndUpdate({_id: req.params.id}, {
+        name,
+        dni,
+        email,
+        birthday_date
+    });
+    res.json({message: 'Updated client.'});
+}
 
-clientsCtrl.deleteClieny = (req, res) => res.json({message: 'DELETE Request client'});
+clientsCtrl.deleteClieny = async (req, res) => {
+    await Client.findOneAndDelete({_id: req.params.id});
+    res.json({message: 'Deleted client.'});
+}
 
 module.exports = clientsCtrl;
