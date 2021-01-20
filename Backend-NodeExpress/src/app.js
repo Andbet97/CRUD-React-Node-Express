@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 // routes
-app.get('/api/clients', (req, res) => res.send('clients'));
+app.use('/api/clients', require('./routes/clients'));
 
 
 module.exports = app;
