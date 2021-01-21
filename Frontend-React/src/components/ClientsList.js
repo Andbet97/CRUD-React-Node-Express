@@ -1,18 +1,35 @@
 import '../css/ClientsList.css';
 import React, { Fragment, useState, useEffect } from 'react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
-import { FormControl, OutlinedInput, InputAdornment } from '@material-ui/core';
+import {
+    FormControl,
+    OutlinedInput,
+    InputAdornment,
+    List
+} from '@material-ui/core';
+import { ListItemClient } from './ListItemClient';
+
 
 export const ClientList = () => {
 
     const [querySearch, setQuerySearch] = useState('');
+    const [clients, setClients] = useState([]);
 
     const handleSearch = (event) => {
         event.preventDefault();
         console.log(querySearch);
-    }
+    }    
+
+    useEffect(() => {
+        async function fetchData() {
+            const res = await axios.get('http://localhost:5000/api/clients');
+            setClients(res.data);
+        }
+        fetchData();
+    }, [clients]);
 
     return (
         <Fragment>
@@ -46,6 +63,15 @@ export const ClientList = () => {
                                     />
                                 </FormControl>
                             </form>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-10 offset-1">
+                            <List>
+                                {
+                                    clients.map(client => ( <ListItemClient key={client._id} client={client}/> ))
+                                }
+                            </List>
                         </div>
                     </div>
                 </div>
