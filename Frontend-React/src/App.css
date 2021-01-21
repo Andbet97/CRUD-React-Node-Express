@@ -1,0 +1,32 @@
+#bar {
+  height: 350px;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: #222838;
+  z-index: -1;
+}
+
+#main-container {
+  margin-top: 100px;
+}
+
+body {
+  background-color: #f2f3f5;
+}
+
+.content-box {
+  margin-top: 30px;
+  background-color: white;
+}
+
+@media (max-width: 1024px) {
+  #main-container {
+    margin-top: 50px;
+  }
+}
+
+.full-width {
+  width: 100%;
+}

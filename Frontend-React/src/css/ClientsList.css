@@ -1,0 +1,13 @@
+h1 {
+    color: white;
+}
+
+#new-client {
+    width: 100%;
+    background-color: #2774b9;
+}
+
+#search-form {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
