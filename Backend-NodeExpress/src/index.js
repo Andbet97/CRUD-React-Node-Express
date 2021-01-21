@@ -6,7 +6,7 @@ require('./database');
 
 async function main() {
     await app.listen(app.get('port'));
-    console.log('Sever run')
+    console.log('Sever running on port ' + app.get('port'));
 }
 
 main();
