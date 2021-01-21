@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { getClients, createClient, getClient, updateClient, deleteClieny } = require('../controllers/clients.controller');
+const { getClients, createClient, getClient, updateClient, deleteClient } = require('../controllers/clients.controller');
 
 const router = Router();
 
@@ -10,6 +10,6 @@ router.route('/')
 router.route('/:id')
     .get(getClient)
     .put(updateClient)
-    .delete(deleteClieny);
+    .delete(deleteClient);
 
 module.exports = router;
