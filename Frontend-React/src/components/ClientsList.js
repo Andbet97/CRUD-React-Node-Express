@@ -8,7 +8,8 @@ import {
     FormControl,
     OutlinedInput,
     InputAdornment,
-    List
+    List,
+    Divider
 } from '@material-ui/core';
 import { ListItemClient } from './ListItemClient';
 
@@ -25,7 +26,8 @@ export const ClientList = () => {
 
     useEffect(() => {
         async function fetchData() {
-            const res = await axios.get('http://localhost:5000/api/clients');
+            let URL = process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : 'http://localhost:5000/api';
+            const res = await axios.get(URL+'/clients/');
             setClients(res.data);
         }
         fetchData();
@@ -38,7 +40,12 @@ export const ClientList = () => {
                     <h1>Listado clientes</h1>
                 </div>
                 <div className="col-6 col-md-3 col-lg-2">
-                    <Link to="/client/create" id="new-client" type="button" className="btn btn-primary">
+                    <Link 
+                        to="/client/create" 
+                        id="new-client"
+                        type="button"
+                        className="btn btn-primary blue-color"
+                    >
                         <AddIcon />
                         Nuevo cliente
                     </Link>
@@ -69,7 +76,16 @@ export const ClientList = () => {
                         <div className="col-10 offset-1">
                             <List>
                                 {
-                                    clients.map(client => ( <ListItemClient key={client._id} client={client}/> ))
+                                    clients.map((client, i) => ( 
+                                        <Fragment>
+                                            <ListItemClient key={client._id} client={client}/> 
+                                            { 
+                                                clients.length === i + 1 
+                                                    ? null
+                                                    : <Divider key={client._id+'divider'} variant="fullWidth" component='li'/>
+                                            }
+                                        </Fragment>
+                                    ))
                                 }
                             </List>
                         </div>

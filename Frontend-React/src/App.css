@@ -30,3 +30,7 @@ body {
 .full-width {
   width: 100%;
 }
+
+.blue-color {
+  background-color: #2774b9 !important;
+}
