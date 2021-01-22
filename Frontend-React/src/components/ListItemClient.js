@@ -11,6 +11,7 @@ import {
     ListItemSecondaryAction,
     Button
 } from '@material-ui/core';
+import { ConfirmAlert } from './ConfirmAlert';
 
 
 export const ListItemClient = (props) => {
@@ -39,9 +40,13 @@ export const ListItemClient = (props) => {
                 <Button variant="contained" color="primary" className="blue-color">
                     <CreateIcon />
                 </Button>
-                <Button onClick={() => handleDelete(client._id)} variant="contained" color="secondary">
-                    <DeleteIcon />
-                </Button>
+                <ConfirmAlert 
+                    buttonprops={{variant:"contained", color:"secondary"}}
+                    buttoncontent={<DeleteIcon />}
+                    title="Eliminar cliente."
+                    message="Una vez eliminado el cliente se borrara toda su información. ¿Está seguro?"
+                    handleClickAgree={() => handleDelete(client._id)}
+                />
             </ListItemSecondaryAction>
         </Fragment>
     );
