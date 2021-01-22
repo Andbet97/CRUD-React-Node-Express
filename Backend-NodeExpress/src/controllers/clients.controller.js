@@ -46,7 +46,6 @@ clientsCtrl.getClients = async (req, res) => {
                 }
             }
         });
-        console.log(query);
         clients = await Client.find(query);
     } else {
         clients = await Client.find();
