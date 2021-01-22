@@ -18,6 +18,7 @@ body {
 
 .content-box {
   margin-top: 30px;
+  min-height: 300px;
   background-color: white;
 }
 
