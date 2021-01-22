@@ -84,7 +84,7 @@ export const UpdateClient = () => {
                                 states={{name, dni, birthday_date, email, errors}}
                                 setStates={{setName, setDni, setBirthday_date, setEmail}}
                             />
-                            <Divider fullWidht id="divider"/>
+                            <Divider variant="fullWidth" id="divider"/>
                             <div className="row mb-5">
                                 <div id="buttons-box" className="col-3 offset-9 mt-4">
                                     <Button
