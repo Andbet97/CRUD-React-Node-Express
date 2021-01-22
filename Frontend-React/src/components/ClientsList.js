@@ -19,7 +19,7 @@ export const ClientList = () => {
     const [query, setQuery] = useState({});
     const [clients, setClients] = useState([]);
 
-    const getUsers = () => {
+    const getURL = () => {
         let URL = process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : 'http://localhost:5000/api';
         URL += '/clients';
 
@@ -29,7 +29,9 @@ export const ClientList = () => {
                 URL += (q + '=' + query[q] + "&")
             ));
         }
+    }
 
+    const getUsers = (URL) => {
         axios
             .get(URL)
             .then((res) => {
@@ -43,13 +45,23 @@ export const ClientList = () => {
             .delete(URL + '/clients/' + id)
             .then((res) => {
                 if (res.status === 200) {
-                    getUsers();
+                    const URL = getURL();
+                    getUsers(URL);
                 }
             });
     }
 
     useEffect(() => {
-        getUsers();
+        let URL = process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : 'http://localhost:5000/api';
+        URL += '/clients';
+
+        if (Object.keys(query).length > 0) {
+            URL += "?";
+            Object.keys(query).map(q => (
+                URL += (q + '=' + query[q] + "&")
+            ));
+        }
+        getUsers(URL);
     }, [query]);
 
     return (
@@ -78,14 +90,14 @@ export const ClientList = () => {
                 <div className="col-12 content-box">
                     <div className="row">
                         <div className="col-10 offset-1">
-                            <Search query={query} setQuery={setQuery}/>
+                            <Search query={query} setQuery={setQuery} />
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-10 offset-1">
                             <List>
                                 {
-                                    clients.length === 0 
+                                    clients.length === 0
                                         ? <Typography>No se han encontrado usuarios</Typography>
                                         : clients.map((client, i) => (
                                             clients.length !== i + 1
@@ -95,7 +107,7 @@ export const ClientList = () => {
                                                 : <ListItem key={client._id}>
                                                     <ListItemClient handleDelete={handleDelete} client={client} />
                                                 </ListItem>
-                                    ))
+                                        ))
                                 }
                             </List>
                         </div>
