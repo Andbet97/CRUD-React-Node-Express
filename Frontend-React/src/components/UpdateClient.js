@@ -86,7 +86,7 @@ export const UpdateClient = () => {
                             />
                             <Divider variant="fullWidth" id="divider"/>
                             <div className="row mb-5">
-                                <div id="buttons-box" className="col-3 offset-9 mt-4">
+                                <div className="col-3 offset-9 mt-4 buttons-box">
                                     <Button
                                         variant="contained"
                                         color="secondary"

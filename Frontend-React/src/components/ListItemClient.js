@@ -29,7 +29,7 @@ export const ListItemClient = (props) => {
     }
 
     const handleEdit = (id) => {
-        const path = '/client/edit/'+id; 
+        const path = '/client/edit/' + id;
         history.push(path);
     }
 
@@ -45,21 +45,24 @@ export const ListItemClient = (props) => {
                 <div className="date">
                     {formatDate(client.birthday_date)} | {formatDate(client.createdAt)}
                 </div>
-                <Button 
-                    variant="contained"
-                    onClick={() => handleEdit(client._id)}
-                    color="primary"
-                    className="blue-color"
-                >
-                    <CreateIcon />
-                </Button>
-                <ConfirmAlert 
-                    buttonprops={{variant:"contained", color:"secondary"}}
-                    buttoncontent={<DeleteIcon />}
-                    title="Eliminar cliente."
-                    message="Una vez eliminado el cliente se borrara toda su información. ¿Está seguro?"
-                    handleClickAgree={() => handleDelete(client._id)}
-                />
+                <div className="buttons-box">
+                    <Button
+                        variant="contained"
+                        onClick={() => handleEdit(client._id)}
+                        color="primary"
+                        className="blue-color"
+                    >
+                        <CreateIcon />
+                    </Button>
+                    <ConfirmAlert
+                        buttonprops={{ variant: "contained", color: "secondary" }}
+                        buttoncontent={<DeleteIcon />}
+                        title="Eliminar cliente."
+                        message="Una vez eliminado el cliente se borrara toda su información. ¿Está seguro?"
+                        handleClickAgree={() => handleDelete(client._id)}
+                    />
+                </div>
+
             </ListItemSecondaryAction>
         </Fragment>
     );
