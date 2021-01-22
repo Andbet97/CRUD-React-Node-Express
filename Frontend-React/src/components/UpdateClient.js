@@ -6,6 +6,7 @@ import {
 } from '@material-ui/core';
 import { Form } from './Form';
 import axios from 'axios';
+import moment from 'moment';
 
 
 export const UpdateClient = () => {
@@ -33,7 +34,7 @@ export const UpdateClient = () => {
                 setDni(data.dni);
                 setEmail(data.email);
                 const date = data.birthday_date.split('T')[0];
-                setBirthday_date(date);
+                setBirthday_date(moment(date).format("MM/DD/YYYY"));
             })
             .catch((err) => {
                 if (err.response.status === 400) {
