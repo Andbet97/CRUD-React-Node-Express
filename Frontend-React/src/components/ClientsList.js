@@ -134,15 +134,17 @@ export const ClientList = () => {
                                     <Card id="date-card"
                                         className="full-width ms-auto center-box"
                                     >
-                                        <CardActions disableSpacing>
-                                            <ListItem
-                                                button
-                                                onClick={handleShowData}
-                                            >
-                                                <ListItemText primary="Filtrar por fecha" />
-                                                {show ? <ExpandLess /> : <ExpandMore />}
-                                            </ListItem>
-                                        </CardActions>
+                                        <Collapse in={!show} timeout="auto">
+                                            <CardActions disableSpacing>
+                                                <ListItem
+                                                    button
+                                                    onClick={handleShowData}
+                                                >
+                                                    <ListItemText primary="Filtrar por fecha" />
+                                                    {show ? <ExpandLess /> : <ExpandMore />}
+                                                </ListItem>
+                                            </CardActions>
+                                        </Collapse>
                                         <Collapse in={show} timeout="auto">
                                             <Zoom in={show}>
                                                 <CardContent>
