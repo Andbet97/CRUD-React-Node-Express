@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { useHistory } from "react-router-dom";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CreateIcon from '@material-ui/icons/Create';
@@ -18,11 +19,18 @@ export const ListItemClient = (props) => {
 
     const { handleDelete, client } = props
 
+    let history = useHistory();
+
     moment.locale('es');
 
     const formatDate = (datetime) => {
         const date = datetime.split('T')[0];
         return moment(date).format("DD MMMM YYYY");
+    }
+
+    const handleEdit = (id) => {
+        const path = '/client/edit/'+id; 
+        history.push(path);
     }
 
     return (
@@ -37,7 +45,12 @@ export const ListItemClient = (props) => {
                 <div className="date">
                     {formatDate(client.birthday_date)} | {formatDate(client.createdAt)}
                 </div>
-                <Button variant="contained" color="primary" className="blue-color">
+                <Button 
+                    variant="contained"
+                    onClick={() => handleEdit(client._id)}
+                    color="primary"
+                    className="blue-color"
+                >
                     <CreateIcon />
                 </Button>
                 <ConfirmAlert 

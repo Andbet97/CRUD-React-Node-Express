@@ -33,7 +33,7 @@ export const CreateClient = () => {
                 email: email,
                 birthday_date: birthday_date
             })
-            .then((res) => {
+            .then(() => {
                 handleCancel();
             }).catch((err) => {
                 if (err.response.status === 400) {
