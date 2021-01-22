@@ -16,7 +16,7 @@ const handleErrors = (error) => {
 
     // validation errors
     if (error.message.includes('validation failed')) {
-        Object.values(error.errors).forEach(({ properties }) => {
+        Object.values(error.errors).forEach(properties => {
             if (errors[properties.path]) {
                 errors[properties.path].push(properties.message);
             } else {
@@ -31,7 +31,26 @@ const handleErrors = (error) => {
 const clientsCtrl = {};
 
 clientsCtrl.getClients = async (req, res) => {
-    const clients = await Client.find();
+    const query = {};
+    var clients = null;
+    if (Object.keys(req.query).length > 0) {
+        Object.keys(req.query).map(q => {
+            if (q === 'name') {
+                query[q] = { $regex: new RegExp("^" + req.query[q].toLowerCase(), "i") }
+            } else {
+                const dategt = req.query[q];
+                const datelt = dategt.slice(0,-1) + (parseInt(dategt.slice(-1), 10) + 1).toString();
+                query[q] = {
+                    $lt: '' + new Date(datelt).toISOString(),
+                    $gt: '' + new Date(dategt).toISOString()
+                }
+            }
+        });
+        console.log(query);
+        clients = await Client.find(query);
+    } else {
+        clients = await Client.find();
+    }
     res.json(clients);
 }
 

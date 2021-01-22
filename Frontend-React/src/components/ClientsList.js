@@ -23,7 +23,7 @@ import {
     Card,
     CardActions,
     CardContent,
-    ButtonGroup
+    Typography
 } from '@material-ui/core';
 import { ListItemClient } from './ListItemClient';
 
@@ -31,8 +31,7 @@ import { ListItemClient } from './ListItemClient';
 export const ClientList = () => {
 
     const [filter, setFilter] = useState('');
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
+    const [filterDate, setFilterDate] = useState(new Date());
     const [query, setQuery] = useState({});
     const [clients, setClients] = useState([]);
     const [show, setShow] = useState(false);
@@ -40,19 +39,44 @@ export const ClientList = () => {
     const handleSearch = (e) => {
         e.preventDefault();
         let qry = {...query}
-        qry.filter = filter
+        qry.name = filter
         setQuery(qry);
     }
 
     const handleDataSearch = () => {
         let qry = {...query}
-        const now = moment(new Date(), 'DD-MM-YYYY').format('YYYY-MM-DD');
-        qry.startDate = moment(startDate, 'DD-MM-YYYY').format('YYYY-MM-DD');
-        const end = moment(endDate, 'DD-MM-YYYY').format('YYYY-MM-DD');
-        if (end !== now) {
-            qry.endDate = end;
-        }
+        qry.createdAt = moment(filterDate, 'DD-MM-YYYY').format('YYYY-MM-DD');
         setQuery(qry);
+        handleShowData();
+    }
+
+    const getUsers = () => {
+        let URL = process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : 'http://localhost:5000/api';
+        URL += '/clients';
+
+        if (Object.keys(query).length > 0) {
+            URL += "?";
+            Object.keys(query).map(q => (
+                URL += (q + '=' + query[q] + "&")
+            ));
+        }
+
+        axios
+            .get(URL)
+            .then((res) => {
+                setClients(res.data);
+            });
+    }
+
+    const handleDelete = (id) => {
+        let URL = process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : 'http://localhost:5000/api';
+        axios
+            .delete(URL + '/clients/' + id)
+            .then((res) => {
+                if (res.status === 200) {
+                    getUsers();
+                }
+            });
     }
 
     const handleFilter = (e) => {
@@ -60,11 +84,7 @@ export const ClientList = () => {
     }
 
     const handleStartData = (data) => {
-        setStartDate(data);
-    }
-
-    const handleEndData = (data) => {
-        setEndDate(data);
+        setFilterDate(data);
     }
 
     const handleShowData = () => {
@@ -73,19 +93,12 @@ export const ClientList = () => {
 
     const handleCleanQuery = () => {
         setFilter('');
-        setStartDate(new Date());
-        setEndDate(new Date());
+        setFilterDate(new Date());
         setQuery({});
     }
 
     useEffect(() => {
-        let URL = process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : 'http://localhost:5000/api';
-        axios
-            .get(URL + '/clients')
-            .then((res) => {
-                setClients(res.data);
-            });
-        console.log(query);
+        getUsers();
     }, [query]);
 
     return (
@@ -140,7 +153,7 @@ export const ClientList = () => {
                                                     button
                                                     onClick={handleShowData}
                                                 >
-                                                    <ListItemText primary="Filtrar por fecha" />
+                                                    <ListItemText primary="Filtrar por fecha de creacion" />
                                                     {show ? <ExpandLess /> : <ExpandMore />}
                                                 </ListItem>
                                             </CardActions>
@@ -155,24 +168,9 @@ export const ClientList = () => {
                                                             variant="inline"
                                                             format="MM/dd/yyyy"
                                                             margin="normal"
-                                                            label="Desde"
-                                                            value={startDate}
+                                                            label="Fecha"
+                                                            value={filterDate}
                                                             onChange={handleStartData}
-                                                            KeyboardButtonProps={{
-                                                                'aria-label': 'change date',
-                                                            }}
-                                                        />
-                                                    </MuiPickersUtilsProvider>
-                                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                                        <KeyboardDatePicker
-                                                            fullWidth
-                                                            disableToolbar
-                                                            variant="inline"
-                                                            format="MM/dd/yyyy"
-                                                            margin="normal"
-                                                            label="Hasta"
-                                                            value={endDate}
-                                                            onChange={handleEndData}
                                                             KeyboardButtonProps={{
                                                                 'aria-label': 'change date',
                                                             }}
@@ -219,14 +217,16 @@ export const ClientList = () => {
                         <div className="col-10 offset-1">
                             <List>
                                 {
-                                    clients.map((client, i) => (
-                                        clients.length !== i + 1
-                                            ? <ListItem key={client._id} divider>
-                                                <ListItemClient client={client} />
-                                            </ListItem>
-                                            : <ListItem key={client._id}>
-                                                <ListItemClient client={client} />
-                                            </ListItem>
+                                    clients.length === 0 
+                                        ? <Typography>No se han encontrado usuarios</Typography>
+                                        : clients.map((client, i) => (
+                                            clients.length !== i + 1
+                                                ? <ListItem key={client._id} divider>
+                                                    <ListItemClient handleDelete={handleDelete} client={client} />
+                                                </ListItem>
+                                                : <ListItem key={client._id}>
+                                                    <ListItemClient handleDelete={handleDelete} client={client} />
+                                                </ListItem>
                                     ))
                                 }
                             </List>
