@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CreateIcon from '@material-ui/icons/Create';
+import moment from 'moment';
 import {
-    ListItem,
     ListItemAvatar,
     Avatar,
     ListItemText,
@@ -14,10 +14,16 @@ import {
 
 export const ListItemClient = (props) => {
 
+    moment.locale('es');
+
     const [client] = useState(props.client);
 
+    const formatDate = (date) => {
+        return moment(date).format("MMM Do YYYY");
+    }
+
     return (
-        <ListItem key={client._id}>
+        <Fragment>
             <ListItemAvatar className="me-4">
                 <Avatar id="avatar">
                     <AccountCircleIcon />
@@ -26,7 +32,7 @@ export const ListItemClient = (props) => {
             <ListItemText primary={client.name} secondary={client.email} />
             <ListItemSecondaryAction>
                 <div className="date">
-                    {client.birthday_date} | {client.createdAt}
+                    {formatDate(client.birthday_date)} | {formatDate(client.createdAt)}
                 </div>
                 <Button variant="contained" color="primary" className="blue-color">
                     <CreateIcon />
@@ -35,6 +41,6 @@ export const ListItemClient = (props) => {
                     <DeleteIcon />
                 </Button>
             </ListItemSecondaryAction>
-        </ListItem>
+        </Fragment>
     );
 }
