@@ -32,7 +32,8 @@ export const UpdateClient = () => {
                 setName(data.name);
                 setDni(data.dni);
                 setEmail(data.email);
-                setBirthday_date(data.birthday_date);
+                const date = data.birthday_date.split('T')[0];
+                setBirthday_date(date);
             })
             .catch((err) => {
                 if (err.response.status === 400) {
